@@ -49,79 +49,79 @@
         owner: root
         group: root
 
-      - name: "Creamos directorio log"
-        file:
-          path: "/var/www/example.com/log"
-          state: directory
-          owner: root
-          group: root
+    - name: "Creamos directorio log"
+      file:
+        path: "/var/www/example.com/log"
+        state: directory
+        owner: root
+        group: root
 
-      - name: "Permisos al directorio /var/www/"
-        file:
-          path: "/var/www/"
-          state: directory
-          mode: '0755'
-          recurse: yes
+    - name: "Permisos al directorio /var/www/"
+      file:
+        path: "/var/www/"
+        state: directory
+        mode: '0755'
+        recurse: yes
 
-      - name: "Creamos index.html"
-        file:
-          path: "/var/www/example.com/html/index.html"
-          state: touch
+    - name: "Creamos index.html"
+      file:
+        path: "/var/www/example.com/html/index.html"
+        state: touch
 
-      - name: "Insertamos contenido del index.html"
-        copy:
-          content: 
-            <html>
-              <head>
-                <title>Welcome to Example.com!</title>
-              </head>
-              <body>
-                <h1>Success! The example.com virtual host is working!</h1>
-              </body>
-            </html>
-          dest: "/var/www/example.com/html/index.html"
+    - name: "Insertamos contenido del index.html"
+      copy:
+        content: 
+          <html>
+            <head>
+              <title>Welcome to Example.com!</title>
+            </head>
+            <body>
+              <h1>Success! The example.com virtual host is working!</h1>
+            </body>
+          </html>
+        dest: "/var/www/example.com/html/index.html"
 
-      - name: "Creamos el directorio /etc/httpd/sites-available"
-        file:
-          path: "/etc/httpd/sites-available"
-          state: directory
+    - name: "Creamos el directorio /etc/httpd/sites-available"
+      file:
+        path: "/etc/httpd/sites-available"
+        state: directory
 
-      - name: "Creamos el directorio /etc/httpd/sites-enabled"
-        file:
-          path: "/etc/httpd/sites-enabled"
-          state: directory
+    - name: "Creamos el directorio /etc/httpd/sites-enabled"
+      file:
+        path: "/etc/httpd/sites-enabled"
+        state: directory
 
-      - name: "Incluir linea en httpd.conf"
-        lineinfile:
-          path: "/etc/httpd/conf/httpd.conf"
-          insertafter: EOF
-          line: "IncludeOptional sites-enabled/*.conf"
-          state: present
+    - name: "Incluir linea en httpd.conf"
+      lineinfile:
+        path: "/etc/httpd/conf/httpd.conf"
+        insertafter: EOF
+        line: "IncludeOptional sites-enabled/*.conf"
+        state: present
 
-      - name: "Creamos fichero example.com.conf"
-        file:
-          path: "/etc/httpd/sites-available/example.com.conf"
-          state: touch
-          owner: root
-          group: root
-      
-      - name: "Insertar virtual host"
-        copy:
-          content: |
-            <VirtualHost *:80>
-              ServerName www.example.com
-              ServerAlias example.com
-              DocumentRoot /var/www/example.com/html
-              ErrorLog /var/www/example.com/log/error.log
-              CustomLog /var/www/example.com/log/requests.log combined
-            </VirtualHost>
-          dest: "/etc/httpd/sites-available/example.com.conf"
+    - name: "Creamos fichero example.com.conf"
+      file:
+        path: "/etc/httpd/sites-available/example.com.conf"
+        state: touch
+        owner: root
+        group: root
+    
+    - name: "Insertar virtual host"
+      copy:
+        content: |
+          <VirtualHost *:80>
+            ServerName www.example.com
+            ServerAlias example.com
+            DocumentRoot /var/www/example.com/html
+            ErrorLog /var/www/example.com/log/error.log
+            CustomLog /var/www/example.com/log/requests.log combined
+          </VirtualHost>
+        dest: "/etc/httpd/sites-available/example.com.conf"
 
-      - name: "Creamos enlace simbolico"
-        file:
-          src: "/etc/httpd/sites-available/example.com.conf"
-          dest: "/etc/httpd/sites-enabled/example.com.conf"
-          state: link
+    - name: "Creamos enlace simbolico"
+      file:
+        src: "/etc/httpd/sites-available/example.com.conf"
+        dest: "/etc/httpd/sites-enabled/example.com.conf"
+        state: link
   
 ...
 
