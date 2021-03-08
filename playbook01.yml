@@ -11,9 +11,9 @@
           para ello, realizaremos varias tareas para levantar un servidor apache
 
     - name: "Instalacion httpd"
-        yum:
-          name: httpd
-          state: present
+      yum:
+        name: httpd
+        state: present
     
     - name: "Habilitamos http en el firewall"
       firewalld:
